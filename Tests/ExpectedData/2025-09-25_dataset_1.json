@@ -1,0 +1,20 @@
+{
+  "Name": "VANGUARD 1",
+  "SatelliteCatalogNumber": 5,
+  "ElsetClassification": "U",
+  "InternationalDesignator": "58002B",
+  "EpochYear": 25,
+  "EpochDay": 267.46586774,
+  "BallisticCoefficient": -0.00000012,
+  "BallisticCoefficientByDayCubed": 0.0,
+  "BStar": 0.36114,
+  "EphemerisType": 0,
+  "ElementSet": 999,
+  "Inclination": 34.2473,
+  "RightAscension": 54.4345,
+  "Eccentricity": 0.1841870,
+  "ArgumentOfPerigee": 20.4208,
+  "MeanAnomaly": 346.1223,
+  "MeanMotion": 10.85923305,
+  "NumRevolutionAtEpoch": 41439
+}
