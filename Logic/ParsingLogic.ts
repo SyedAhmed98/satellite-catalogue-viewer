@@ -1,6 +1,6 @@
 import { SatelliteData } from '../Models/SatelliteData';
 
-export function Parse3leData(data: string): SatelliteData[] {
+export function Parse3le(data: string): SatelliteData[] {
   let lines = data.split('\n');
   let parsedData = new Array<SatelliteData>();
 
@@ -40,7 +40,7 @@ export function Parse3leData(data: string): SatelliteData[] {
     parsedObject.EpochDay = parseFloat(line2.substring(20, 32));
     parsedObject.BallisticCoefficient = parseFloat(line2.substring(33, 43));
     parsedObject.BallisticCoefficientByDayCubed = parseFloat(line2.substring(44, 52));
-    parsedObject.BStar = ParseFloatWithEncodedBase10(line2.substring(53, 61).trim());
+    parsedObject.BStar = ParseScientificNotation(line2.substring(53, 61).trim());
     parsedObject.EphemerisType = parseInt(line2.substring(62, 63));
     parsedObject.ElementSet = parseInt(line2.substring(64, 68));
     parsedObject.Inclination = parseFloat(line3.substring(8, 16));
@@ -57,7 +57,7 @@ export function Parse3leData(data: string): SatelliteData[] {
   return parsedData;
 }
 
-function ParseFloatWithEncodedBase10(data: string): number {
+export function ParseScientificNotation(data: string): number {
   let isNegative = false;
   if (data.startsWith('-')) {
     isNegative = true;
@@ -69,4 +69,12 @@ function ParseFloatWithEncodedBase10(data: string): number {
   if (isNegative) base *= -1;
   let exponent = parseInt(parts[1]) * -1;
   return base * Math.pow(10, exponent);
+}
+
+export function ParseDecimalPointAssumed(data: string): number {
+  let stringDec = data;
+  if (!stringDec.startsWith('0.')) {
+    stringDec = `0.` + stringDec;
+  }
+  return parseFloat(stringDec);
 }
