@@ -5,11 +5,15 @@ import { SatelliteData } from '../Models/SatelliteData';
 import subsetData from '../Assets/2025-09-25_dataset_subset_5.3le?raw';
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(
-  45,
-  window.innerWidth / window.innerHeight,
-  3.5,
-  7.5,
+const width = 500;
+const height = 500;
+const camera = new THREE.OrthographicCamera(
+  (window.innerWidth / width) * -1,
+  window.innerWidth / width,
+  window.innerHeight / height,
+  (window.innerHeight / height) * -1,
+  1,
+  500,
 );
 
 const renderer = new THREE.WebGLRenderer();
@@ -21,9 +25,11 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enablePan = false;
 controls.enableZoom = false;
 
-const wireframeMaterial = new THREE.MeshDepthMaterial({
+const wireframeMaterial = new THREE.MeshStandardMaterial({
   wireframe: true,
-  opacity: 1,
+  opacity: 0.125,
+  transparent: true,
+  emissive: 0xffffff,
   visible: true,
 });
 
@@ -41,29 +47,22 @@ let circle1 = new THREE.LineLoop(circleGeo1, circle1Material);
 scene.add(circle1);
 
 const circleGeo = new THREE.RingGeometry(1.7, 1.7, 32, 1);
-// const ellipsePoints = new THREE.EllipseCurve(
-//   0,      // ax
-//   0,      // aY
-//   1.5,    // xRadius
-//   1.5,    // yRadius
-//   0,      // aStartAngle
-//   2 * Math.PI, // aEndAngle
-//   false,  // aClockwise
-//   0,      // aRotation
-// ).getPoints(100);
-// const circleGeo = new THREE.BufferGeometry().setFromPoints(ellipsePoints);
 circleGeo.rotateX((Math.PI / 180) * 90);
 circleGeo.rotateZ((Math.PI / 180) * satelliteOne.Inclination);
 
 let circle = new THREE.LineLoop(circleGeo, wireframeMaterial);
 scene.add(circle);
 
-const sphereGeo = new THREE.SphereGeometry(1.2756, 32, 16);
-let sphere = new THREE.Mesh(sphereGeo, wireframeMaterial);
-scene.add(sphere);
+const earthGeo = new THREE.SphereGeometry(1.2756, 32, 16);
+let earthMesh = new THREE.Mesh(earthGeo, wireframeMaterial);
+scene.add(earthMesh);
 
-camera.position.z = 5.5;
-controls.update();
+const moonGeo = new THREE.SphereGeometry(0.34748, 8, 4);
+let moonMesh = new THREE.Mesh(moonGeo, wireframeMaterial);
+moonMesh.translateZ(-385);
+scene.add(moonMesh);
+
+camera.position.z = 50;
 
 function animate() {
   requestAnimationFrame(animate);
